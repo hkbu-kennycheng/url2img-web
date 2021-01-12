@@ -6,18 +6,17 @@ const port = process.env.PORT || 5000
 
 app.get('/:u', async (req, res) => {
   if (!req.params.u) {
-    res.sendStatus(404);
-    return;
+    return res.sendStatus(404);
   }
 
   let url = Buffer.from(req.params.u, 'base64').toString();
-  let img = `${req.params.u.replace('/',':')}.png`;
+  let img = `${process.cwd()}/${req.params.u.replace('/',':')}.png`;
+  console.log(`${req.params.u} url is ${url}`);
   if (fs.existsSync(img)) {
-    res.sendFile(img);
-    return;
+    return res.sendFile(img);
   }
 
-  console.log(`${req.params.u} url is ${url}`);
+
 
   const browser = await puppeteer.launch();
   //const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium'});
@@ -26,7 +25,7 @@ app.get('/:u', async (req, res) => {
   await page.screenshot({path: img});
   await browser.close();
 
-  res.sendFile(img);
+  return res.sendFile(img);
   //fs.unlinkSync(img);
 })
 
