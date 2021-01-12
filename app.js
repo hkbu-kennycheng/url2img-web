@@ -18,8 +18,8 @@ app.get('/:u', async (req, res) => {
 
 
 
-  const browser = await puppeteer.launch();
-  //const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium'});
+  const browser = await puppeteer.launch({args:['--no-sandbox']});
+  //const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium', args:['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto(url);
   await page.screenshot({path: img});
