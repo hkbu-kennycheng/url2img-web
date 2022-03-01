@@ -25,7 +25,7 @@ app.get('/:u', async (req, res) => {
     height: parseInt(req.query.h) || 1024,
     deviceScaleFactor: 1,
   });
-  await page.goto(url);
+  await page.goto(url, {timeout:60, waitUntil:'networkidle0'});
   await page.screenshot({path: img});
   await browser.close();
 
