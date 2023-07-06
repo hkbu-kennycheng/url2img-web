@@ -1,17 +1,17 @@
 const express = require('express')
 const fs = require('fs');
 const puppeteer = require('puppeteer')
+const { createHash } = require('crypto');
 const app = express()
 const port = process.env.PORT || 5000
 
-app.get('/:u', async (req, res) => {
-  if (!req.params.u) {
-    return res.sendStatus(404);
+app.get('*', async (req, res) => {
+  let url = 'https://' + (req.path.substring(1) || 'ddg.gg')
+  if (req.query) {
+    url += '?' + req.query
   }
-
-  let url = Buffer.from(req.params.u, 'base64').toString();
-  let img = `${process.cwd()}/${req.params.u.replace('/',':')}.png`;
-  console.log(`${req.params.u} url is ${url}`);
+  let img = `${process.cwd()}/${createHash('sha256').update(url).digest('hex')}.png`;
+  console.log(`url is ${url}`);
   if (fs.existsSync(img)) {
     return res.sendFile(img);
   }
@@ -34,5 +34,5 @@ app.get('/:u', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(` listening at http://localhost:${port}`)
+  console.log(`listening at http://localhost:${port}`)
 })
