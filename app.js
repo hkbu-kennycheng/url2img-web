@@ -1,9 +1,10 @@
 const express = require('express')
-const fs = require('fs');
+const fs = require('fs')
 const puppeteer = require('puppeteer')
-const { createHash } = require('crypto');
+const { createHash } = require('crypto')
 const app = express()
 const port = process.env.PORT || 5000
+const version = process.env.VERSION || '114.0.5735.198'
 
 app.get('*', async (req, res) => {
   let url = 'https://' + (req.path.substring(1) || 'ddg.gg')
@@ -19,13 +20,13 @@ app.get('*', async (req, res) => {
   //const browser = await puppeteer.launch({args:['--no-sandbox']});
   const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium', headless:true, args:['--no-sandbox']});
   const page = await browser.newPage();
-  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36')
+  await page.setUserAgent(`Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${version} Safari/537.36`)
   await page.setViewport({
     width: parseInt(req.query.w) || 1280,
     height: parseInt(req.query.h) || 1024,
     deviceScaleFactor: 1,
   });
-  await page.goto(url, {timeout:60, waitUntil:'networkidle0'});
+  await page.goto(url, {timeout:10000, waitUntil:'networkidle0'});
   await page.screenshot({path: img});
   await browser.close();
 
