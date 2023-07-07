@@ -2,6 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const puppeteer = require('puppeteer-core')
 const { createHash } = require('crypto')
+const URL = require('url')
 const app = express()
 const port = process.env.PORT || 5000
 const version = process.env.VERSION || '114.0.5735.198'
@@ -9,7 +10,7 @@ const version = process.env.VERSION || '114.0.5735.198'
 app.get('*', async (req, res) => {
   let url = 'https://' + (req.path.substring(1) || 'ddg.gg')
   if (req.query) {
-    url += '?' + req.query
+    url += '?' + URL.parse(req.url, false).query
   }
   let img = `${process.cwd()}/${createHash('sha256').update(url).digest('hex')}.png`;
   console.log(`url is ${url}`);
