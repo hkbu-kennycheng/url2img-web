@@ -10,7 +10,7 @@ const version = process.env.VERSION || '114.0.5735.198'
 app.get('*', async (req, res) => {
   let url = 'https://' + (req.path.substring(1) || 'ddg.gg')
   if (req.query) {
-    url += '?' + URL.parse(req.url, false).query
+    url += '?' + URL.parse(req.url).query
   }
   let img = `${process.cwd()}/${createHash('sha256').update(url).digest('hex')}.png`;
   console.log(`url is ${url}`);
