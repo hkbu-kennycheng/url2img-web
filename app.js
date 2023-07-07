@@ -36,6 +36,6 @@ app.get('*', async (req, res) => {
   //fs.unlinkSync(img);
 })
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`listening at http://localhost:${port}`)
 })
