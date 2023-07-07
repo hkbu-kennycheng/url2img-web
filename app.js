@@ -1,6 +1,6 @@
 const express = require('express')
 const fs = require('fs')
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-core')
 const { createHash } = require('crypto')
 const app = express()
 const port = process.env.PORT || 5000
